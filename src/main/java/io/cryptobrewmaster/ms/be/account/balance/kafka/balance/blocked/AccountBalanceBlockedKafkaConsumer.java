@@ -1,6 +1,6 @@
 package io.cryptobrewmaster.ms.be.account.balance.kafka.balance.blocked;
 
-import io.cryptobrewmaster.ms.be.account.balance.service.blocked.AccountBlockedBalanceService;
+import io.cryptobrewmaster.ms.be.account.balance.service.blocked.AccountBalanceBlockedService;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBlockedBalance;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class AccountBlockedBalanceKafkaConsumer {
+public class AccountBalanceBlockedKafkaConsumer {
 
-    private final AccountBlockedBalanceService accountBlockedBalanceService;
+    private final AccountBalanceBlockedService accountBalanceBlockedService;
 
     @KafkaListener(
             topics = "${kafka.topic.account-balance-block-complete}",
@@ -29,7 +29,7 @@ public class AccountBlockedBalanceKafkaConsumer {
 
         try {
             log.info("Consumed message for complete account balance: {}", accountBlockedBalanceLogInfo);
-            accountBlockedBalanceService.complete(kafkaAccountBlockedBalance);
+            accountBalanceBlockedService.complete(kafkaAccountBlockedBalance);
             log.info("Processed message for complete account balance: {}", accountBlockedBalanceLogInfo);
         } catch (Exception e) {
             log.error("Error while on consumed for complete account balance: {}. Error = {}",
@@ -51,7 +51,7 @@ public class AccountBlockedBalanceKafkaConsumer {
 
         try {
             log.info("Consumed message for rollback account balance: {}", accountBlockedBalanceLogInfo);
-            accountBlockedBalanceService.rollback(kafkaAccountBlockedBalance);
+            accountBalanceBlockedService.rollback(kafkaAccountBlockedBalance);
             log.info("Processed message for rollback account balance: {}", accountBlockedBalanceLogInfo);
         } catch (Exception e) {
             log.error("Error while on consumed for rollback account balance: {}. Error = {}",

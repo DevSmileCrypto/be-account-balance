@@ -5,7 +5,7 @@ import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountB
 /**
  * The interface Account blocked balance service.
  */
-public interface AccountBlockedBalanceService {
+public interface AccountBalanceBlockedService {
 
     /**
      * Complete.

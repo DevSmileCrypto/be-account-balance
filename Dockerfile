@@ -12,7 +12,7 @@ RUN gradle -Penv=$gradle_env clean build
 
 #2
 FROM openjdk:11-jre
-COPY --from=BUILD_IMAGE /apps/build/libs/be-payment-0.0.1-SNAPSHOT.jar .
+COPY --from=BUILD_IMAGE /apps/build/libs/be-account-balance-0.0.1-SNAPSHOT.jar .
 COPY --from=BUILD_IMAGE /apps/startup.sh .
 
 CMD bash startup.sh

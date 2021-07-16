@@ -2,7 +2,7 @@ package io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked;
 
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.account.balance.db.listener.AccountBlockedBalanceEntityListener;
+import io.cryptobrewmaster.ms.be.account.balance.db.listener.blocked.AccountBalanceBlockedEntityListener;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.request.AccountBalanceChangedRequestDto;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeAction;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeSource;
@@ -32,7 +32,7 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AccountBlockedBalanceEntityListener.class)
+@EntityListeners(AccountBalanceBlockedEntityListener.class)
 @Entity
 @SequenceGenerator(
         name = "account_blocked_balance_sequence_generator",
@@ -40,7 +40,7 @@ import java.math.BigDecimal;
         allocationSize = 1
 )
 @Table(name = "account_blocked_balance")
-public class AccountBlockedBalance {
+public class AccountBalanceBlocked {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -72,9 +72,9 @@ public class AccountBlockedBalance {
     @Column(name = "last_modified_date")
     private Long lastModifiedDate;
 
-    public static AccountBlockedBalance of(BigDecimal oldQuantity, BalanceChangeStatus status, BalanceOperation operation,
+    public static AccountBalanceBlocked of(BigDecimal oldQuantity, BalanceChangeStatus status, BalanceOperation operation,
                                            AccountBalance accountBalance, AccountBalanceChangedRequestDto accountBalanceChangedRequestDto) {
-        return new AccountBlockedBalance(
+        return new AccountBalanceBlocked(
                 null, accountBalance, oldQuantity, BigDecimal.valueOf(accountBalanceChangedRequestDto.getQuantity()),
                 operation, status, accountBalanceChangedRequestDto.getSource(),
                 accountBalanceChangedRequestDto.getAction(), null, null

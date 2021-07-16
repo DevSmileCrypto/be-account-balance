@@ -11,19 +11,19 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
-@StaticMetamodel(AccountBlockedBalanceHistory.class)
-public abstract class AccountBlockedBalanceHistory_ {
+@StaticMetamodel(AccountBalanceBlocked.class)
+public abstract class AccountBalanceBlocked_ {
 
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, BigDecimal> oldQuantity;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, Long> createdDate;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, Long> lastModifiedDate;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, BigDecimal> blockedQuantity;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, BalanceChangeAction> action;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, Long> id;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, BalanceChangeSource> source;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, AccountBalance> accountBalance;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, BalanceOperation> operation;
-	public static volatile SingularAttribute<AccountBlockedBalanceHistory, BalanceChangeStatus> status;
+	public static volatile SingularAttribute<AccountBalanceBlocked, BigDecimal> oldQuantity;
+	public static volatile SingularAttribute<AccountBalanceBlocked, Long> createdDate;
+	public static volatile SingularAttribute<AccountBalanceBlocked, Long> lastModifiedDate;
+	public static volatile SingularAttribute<AccountBalanceBlocked, BigDecimal> blockedQuantity;
+	public static volatile SingularAttribute<AccountBalanceBlocked, BalanceChangeAction> action;
+	public static volatile SingularAttribute<AccountBalanceBlocked, Long> id;
+	public static volatile SingularAttribute<AccountBalanceBlocked, BalanceChangeSource> source;
+	public static volatile SingularAttribute<AccountBalanceBlocked, AccountBalance> accountBalance;
+	public static volatile SingularAttribute<AccountBalanceBlocked, BalanceOperation> operation;
+	public static volatile SingularAttribute<AccountBalanceBlocked, BalanceChangeStatus> status;
 
 	public static final String OLD_QUANTITY = "oldQuantity";
 	public static final String CREATED_DATE = "createdDate";

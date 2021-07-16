@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "account_blocked_balance_history")
-public class AccountBlockedBalanceHistory {
+public class AccountBalanceBlockedHistory {
     @Id
     @Column(name = "id")
     private Long id;
@@ -56,13 +56,13 @@ public class AccountBlockedBalanceHistory {
     @Column(name = "last_modified_date")
     private Long lastModifiedDate;
 
-    public static AccountBlockedBalanceHistory of(AccountBlockedBalance accountBlockedBalance) {
-        return new AccountBlockedBalanceHistory(
-                accountBlockedBalance.getId(), accountBlockedBalance.getAccountBalance(),
-                accountBlockedBalance.getOldQuantity(), accountBlockedBalance.getBlockedQuantity(),
-                accountBlockedBalance.getStatus(), accountBlockedBalance.getOperation(),
-                accountBlockedBalance.getSource(), accountBlockedBalance.getAction(),
-                accountBlockedBalance.getCreatedDate(), accountBlockedBalance.getLastModifiedDate()
+    public static AccountBalanceBlockedHistory of(AccountBalanceBlocked accountBalanceBlocked) {
+        return new AccountBalanceBlockedHistory(
+                accountBalanceBlocked.getId(), accountBalanceBlocked.getAccountBalance(),
+                accountBalanceBlocked.getOldQuantity(), accountBalanceBlocked.getBlockedQuantity(),
+                accountBalanceBlocked.getStatus(), accountBalanceBlocked.getOperation(),
+                accountBalanceBlocked.getSource(), accountBalanceBlocked.getAction(),
+                accountBalanceBlocked.getCreatedDate(), accountBalanceBlocked.getLastModifiedDate()
         );
     }
 }

@@ -3,9 +3,9 @@ package io.cryptobrewmaster.ms.be.account.balance.service;
 import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.dto.BalanceConfigDto;
 import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.service.ConfigurationDataStorageCommunicationService;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBlockedBalance;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.AccountBalanceRepository;
-import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBlockedBalanceRepository;
+import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedRepository;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.AccountBalanceDto;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.param.AccountBalanceRequestParam;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.request.AccountBalanceChangedRequestDto;
@@ -33,7 +33,7 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
     private final ConfigurationDataStorageCommunicationService configurationDataStorageCommunicationService;
 
     private final AccountBalanceRepository accountBalanceRepository;
-    private final AccountBlockedBalanceRepository accountBlockedBalanceRepository;
+    private final AccountBalanceBlockedRepository accountBalanceBlockedRepository;
 
     @Transactional
     public void init(KafkaAccount kafkaAccount) {
@@ -76,10 +76,10 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
         accountBalance.setQuantity(newQuantity);
         accountBalance = accountBalanceRepository.save(accountBalance);
 
-        var accountBlockedBalanceHistory = AccountBlockedBalance.of(
+        var accountBlockedBalanceHistory = AccountBalanceBlocked.of(
                 oldQuantity, IN_PROCESS, ADD, accountBalance, accountBalanceChangedRequestDto
         );
-        accountBlockedBalanceRepository.save(accountBlockedBalanceHistory);
+        accountBalanceBlockedRepository.save(accountBlockedBalanceHistory);
 
         return AccountBalanceChangedResponseDto.of(accountBlockedBalanceHistory.getId(), accountBalance);
     }
@@ -104,10 +104,10 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
         accountBalance.setQuantity(newQuantity);
         accountBalance = accountBalanceRepository.save(accountBalance);
 
-        var accountBlockedBalance = AccountBlockedBalance.of(
+        var accountBlockedBalance = AccountBalanceBlocked.of(
                 oldQuantity, IN_PROCESS, SUBTRACT, accountBalance, accountBalanceChangedRequestDto
         );
-        accountBlockedBalanceRepository.save(accountBlockedBalance);
+        accountBalanceBlockedRepository.save(accountBlockedBalance);
 
         return AccountBalanceChangedResponseDto.of(accountBlockedBalance.getId(), accountBalance);
     }
