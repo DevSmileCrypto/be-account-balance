@@ -6,11 +6,19 @@ import io.cryptobrewmaster.ms.be.account.balance.web.model.request.AccountBalanc
 import io.cryptobrewmaster.ms.be.account.balance.web.model.response.AccountBalanceChangedResponseDto;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
 import io.cryptobrewmaster.ms.be.library.dto.PageDto;
+import io.cryptobrewmaster.ms.be.library.kafka.dto.account.KafkaAccount;
 
 /**
  * The interface Account balance service.
  */
 public interface AccountBalanceService {
+
+    /**
+     * Init.
+     *
+     * @param kafkaAccountl the kafka accountl
+     */
+    void init(KafkaAccount kafkaAccountl);
 
     /**
      * Gets by account id and currency.

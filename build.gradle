@@ -1,8 +1,19 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
 }
+
+apply plugin: 'com.jfrog.artifactory'
 
 group = 'io.cryptobrewmaster.ms'
 version = '0.0.1-SNAPSHOT'
@@ -24,12 +35,12 @@ repositories {
 
 ext {
     set('springCloudVersion', "2020.0.2")
-
-    prodLibrary = { compile fileTree(dir: 'libs/prod', include: '*.jar') }
-    devLibrary = { compile fileTree(dir: 'libs/dev', include: '*.jar') }
+    set('libVersion', "0.0.1-DEV")
 }
 
 dependencies {
+    implementation "alt-cryptobrewmaster:be-library:${libVersion}"
+
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -48,12 +59,11 @@ dependencies {
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.hibernate:hibernate-jpamodelgen:5.5.3.Final'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
 }
-
-dependencies project."${findProperty('env') ?: 'dev'}Library"
 
 dependencyManagement {
     imports {
@@ -63,4 +73,28 @@ dependencyManagement {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file("src/generated/java")
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ['src/generated/java']
+        }
+    }
+}
+
+artifactory {
+    contextUrl = "${artifactory_contextUrl}"
+    resolve {
+        repository {
+            repoKey = 'alt-cryptobrewmaster-gradle-dev-local'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+        }
+    }
 }

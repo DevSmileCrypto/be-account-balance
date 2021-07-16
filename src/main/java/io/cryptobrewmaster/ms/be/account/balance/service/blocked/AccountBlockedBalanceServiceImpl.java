@@ -1,4 +1,4 @@
-package io.cryptobrewmaster.ms.be.account.balance.kafka.balance.blocked;
+package io.cryptobrewmaster.ms.be.account.balance.service.blocked;
 
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
@@ -11,17 +11,16 @@ import io.cryptobrewmaster.ms.be.account.balance.kafka.balance.AccountBalanceKaf
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBlockedBalance;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
-public class AccountBlockedBalanceKafkaReceiver {
+public class AccountBlockedBalanceServiceImpl implements AccountBlockedBalanceService {
 
     private final AccountBalanceKafkaSender accountBalanceKafkaSender;
 
@@ -32,6 +31,7 @@ public class AccountBlockedBalanceKafkaReceiver {
     private final Map<BalanceOperation, BiConsumer<AccountBalance, AccountBlockedBalance>> operationRollbackMap = Map.of(
             BalanceOperation.ADD, (accountBalance, accountBlockedBalance) -> {
                 var newQuantity = accountBalance.getQuantity().subtract(accountBlockedBalance.getBlockedQuantity());
+                newQuantity = newQuantity.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : newQuantity;
                 accountBalance.setQuantity(newQuantity);
             },
             BalanceOperation.SUBTRACT, (accountBalance, accountBlockedBalance) -> {

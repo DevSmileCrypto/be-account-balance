@@ -1,5 +1,8 @@
 package io.cryptobrewmaster.ms.be.account.balance.service;
 
+import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.dto.BalanceConfigDto;
+import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.service.ConfigurationDataStorageCommunicationService;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBlockedBalance;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.AccountBalanceRepository;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBlockedBalanceRepository;
@@ -10,11 +13,14 @@ import io.cryptobrewmaster.ms.be.account.balance.web.model.response.AccountBalan
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
 import io.cryptobrewmaster.ms.be.library.dto.PageDto;
 import io.cryptobrewmaster.ms.be.library.exception.balance.NotEnoughBalanceException;
+import io.cryptobrewmaster.ms.be.library.kafka.dto.account.KafkaAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation.ADD;
 import static io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation.SUBTRACT;
@@ -24,8 +30,22 @@ import static io.cryptobrewmaster.ms.be.library.constants.account.balance.Balanc
 @Service
 public class AccountBalanceServiceImpl implements AccountBalanceService {
 
+    private final ConfigurationDataStorageCommunicationService configurationDataStorageCommunicationService;
+
     private final AccountBalanceRepository accountBalanceRepository;
     private final AccountBlockedBalanceRepository accountBlockedBalanceRepository;
+
+    @Transactional
+    public void init(KafkaAccount kafkaAccount) {
+        List<BalanceConfigDto> balanceConfigDtos = configurationDataStorageCommunicationService.getAllBalanceConfig();
+
+        List<AccountBalance> accountBalances = balanceConfigDtos.stream()
+                .map(balanceConfigDto -> AccountBalance.of(kafkaAccount.getId(), balanceConfigDto))
+                .collect(Collectors.toList());
+
+        accountBalanceRepository.saveAll(accountBalances);
+    }
+
 
     @Override
     public AccountBalanceDto getByAccountIdAndCurrency(String accountId, Currency currency) {

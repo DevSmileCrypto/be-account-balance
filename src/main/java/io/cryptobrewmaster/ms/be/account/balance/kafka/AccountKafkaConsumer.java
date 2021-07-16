@@ -1,5 +1,6 @@
 package io.cryptobrewmaster.ms.be.account.balance.kafka;
 
+import io.cryptobrewmaster.ms.be.account.balance.service.AccountBalanceService;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.KafkaAccount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountKafkaConsumer {
 
-    private final AccountKafkaReceiver accountKafkaReceiver;
+    private final AccountBalanceService accountBalanceService;
 
     @KafkaListener(
             topics = "${kafka.topic.account-init}",
@@ -28,7 +29,7 @@ public class AccountKafkaConsumer {
 
         try {
             log.info("Consumed message for init account: {}", accountLogInfo);
-            accountKafkaReceiver.init(kafkaAccount);
+            accountBalanceService.init(kafkaAccount);
             log.info("Processed message for init account: {}", accountLogInfo);
         } catch (Exception e) {
             log.error("Error while on consumed for init account: {}. Error = {}",
