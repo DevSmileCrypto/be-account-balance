@@ -2,8 +2,8 @@ package io.cryptobrewmaster.ms.be.account.balance.web.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
-import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeAction;
-import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeSource;
+import io.cryptobrewmaster.ms.be.library.constants.audit.AuditAction;
+import io.cryptobrewmaster.ms.be.library.constants.audit.AuditSource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class AccountBalanceChangedRequestDto {
     @NotNull
     private Double quantity;
     @NotNull
-    private BalanceChangeSource source;
+    private AuditSource source;
     @NotNull
-    private BalanceChangeAction action;
+    private AuditAction action;
 }

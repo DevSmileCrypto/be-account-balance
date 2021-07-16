@@ -2,9 +2,9 @@ package io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked;
 
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeAction;
-import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeSource;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
+import io.cryptobrewmaster.ms.be.library.constants.audit.AuditAction;
+import io.cryptobrewmaster.ms.be.library.constants.audit.AuditSource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,10 +47,10 @@ public class AccountBalanceBlockedHistory {
     private BalanceOperation operation;
     @Enumerated(EnumType.STRING)
     @Column(name = "source")
-    private BalanceChangeSource source;
+    private AuditSource source;
     @Enumerated(EnumType.STRING)
     @Column(name = "action")
-    private BalanceChangeAction action;
+    private AuditAction action;
     @Column(name = "created_date")
     private Long createdDate;
     @Column(name = "last_modified_date")

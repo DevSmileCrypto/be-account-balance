@@ -2,9 +2,9 @@ package io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked;
 
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeAction;
-import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeSource;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
+import io.cryptobrewmaster.ms.be.library.constants.audit.AuditAction;
+import io.cryptobrewmaster.ms.be.library.constants.audit.AuditSource;
 import java.math.BigDecimal;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
@@ -18,9 +18,9 @@ public abstract class AccountBalanceBlockedHistory_ {
 	public static volatile SingularAttribute<AccountBalanceBlockedHistory, Long> createdDate;
 	public static volatile SingularAttribute<AccountBalanceBlockedHistory, Long> lastModifiedDate;
 	public static volatile SingularAttribute<AccountBalanceBlockedHistory, BigDecimal> blockedQuantity;
-	public static volatile SingularAttribute<AccountBalanceBlockedHistory, BalanceChangeAction> action;
+	public static volatile SingularAttribute<AccountBalanceBlockedHistory, AuditAction> action;
 	public static volatile SingularAttribute<AccountBalanceBlockedHistory, Long> id;
-	public static volatile SingularAttribute<AccountBalanceBlockedHistory, BalanceChangeSource> source;
+	public static volatile SingularAttribute<AccountBalanceBlockedHistory, AuditSource> source;
 	public static volatile SingularAttribute<AccountBalanceBlockedHistory, AccountBalance> accountBalance;
 	public static volatile SingularAttribute<AccountBalanceBlockedHistory, BalanceOperation> operation;
 	public static volatile SingularAttribute<AccountBalanceBlockedHistory, BalanceChangeStatus> status;
