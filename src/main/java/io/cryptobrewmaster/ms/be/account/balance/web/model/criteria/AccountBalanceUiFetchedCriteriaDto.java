@@ -1,4 +1,4 @@
-package io.cryptobrewmaster.ms.be.account.balance.web.model.param;
+package io.cryptobrewmaster.ms.be.account.balance.web.model.criteria;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccountBalanceRequestParam {
+public class AccountBalanceUiFetchedCriteriaDto {
     private String accountId;
     private List<Currency> currencies;
 

@@ -1,7 +1,8 @@
 package io.cryptobrewmaster.ms.be.account.balance.service;
 
 import io.cryptobrewmaster.ms.be.account.balance.web.model.AccountBalanceDto;
-import io.cryptobrewmaster.ms.be.account.balance.web.model.param.AccountBalanceRequestParam;
+import io.cryptobrewmaster.ms.be.account.balance.web.model.AccountBalanceUiDto;
+import io.cryptobrewmaster.ms.be.account.balance.web.model.criteria.AccountBalanceFetchedCriteriaDto;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.request.AccountBalanceChangedRequestDto;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.response.AccountBalanceChangedResponseDto;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
@@ -16,9 +17,9 @@ public interface AccountBalanceService {
     /**
      * Init.
      *
-     * @param kafkaAccountl the kafka accountl
+     * @param kafkaAccount the kafka account
      */
-    void init(KafkaAccount kafkaAccountl);
+    void init(KafkaAccount kafkaAccount);
 
     /**
      * Gets by account id and currency.
@@ -30,12 +31,20 @@ public interface AccountBalanceService {
     AccountBalanceDto getByAccountIdAndCurrency(String accountId, Currency currency);
 
     /**
-     * Gets all.
+     * Fetch by criteria page dto.
      *
-     * @param param the param
-     * @return the all
+     * @param criteria the criteria
+     * @return the page dto
      */
-    PageDto<AccountBalanceDto> getAll(AccountBalanceRequestParam param);
+    PageDto<AccountBalanceDto> fetchByCriteria(AccountBalanceFetchedCriteriaDto criteria);
+
+    /**
+     * Fetch by criteria for ui page dto.
+     *
+     * @param criteria the criteria
+     * @return the page dto
+     */
+    PageDto<AccountBalanceUiDto> fetchByCriteriaForUi(AccountBalanceFetchedCriteriaDto criteria);
 
     /**
      * Add account balance changed response dto.

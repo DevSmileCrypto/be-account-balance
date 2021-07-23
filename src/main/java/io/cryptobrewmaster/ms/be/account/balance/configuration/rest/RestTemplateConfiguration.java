@@ -1,6 +1,6 @@
 package io.cryptobrewmaster.ms.be.account.balance.configuration.rest;
 
-import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.properties.ConfigurationDataStorageProperties;
+import io.cryptobrewmaster.ms.be.account.balance.communication.config.properties.ConfigProperties;
 import io.cryptobrewmaster.ms.be.account.balance.configuration.rest.properties.RestTemplateProperties;
 import io.cryptobrewmaster.ms.be.library.configuration.rest.interceptor.JsonContentTypeRestTemplateInterceptor;
 import io.cryptobrewmaster.ms.be.library.exception.integration.CommunicationErrorHandler;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 
-import static io.cryptobrewmaster.ms.be.library.constants.MicroServiceName.BE_CONFIGURATION_DATA_STORAGE;
+import static io.cryptobrewmaster.ms.be.library.constants.MicroServiceName.BE_CONFIG;
 
 @Configuration
 public class RestTemplateConfiguration {
@@ -51,14 +51,13 @@ public class RestTemplateConfiguration {
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(httpClient));
     }
 
-    @Bean(name = "configurationDataStorageRestTemplate")
-    public RestTemplate configurationDataStorageRestTemplate(RestTemplateBuilder restTemplateBuilder,
-                                                             ConfigurationDataStorageProperties configurationDataStorageProperties) {
-        return restTemplateBuilder.errorHandler(new CommunicationErrorHandler(BE_CONFIGURATION_DATA_STORAGE))
-                .rootUri(configurationDataStorageProperties.getUri())
+    @Bean(name = "configRestTemplate")
+    public RestTemplate configRestTemplate(RestTemplateBuilder restTemplateBuilder, ConfigProperties configProperties) {
+        return restTemplateBuilder.errorHandler(new CommunicationErrorHandler(BE_CONFIG))
+                .rootUri(configProperties.getUri())
                 .interceptors(new JsonContentTypeRestTemplateInterceptor())
-                .setConnectTimeout(Duration.ofMillis(configurationDataStorageProperties.getTimeout().getConnect()))
-                .setReadTimeout(Duration.ofMillis(configurationDataStorageProperties.getTimeout().getRead()))
+                .setConnectTimeout(Duration.ofMillis(configProperties.getTimeout().getConnect()))
+                .setReadTimeout(Duration.ofMillis(configProperties.getTimeout().getRead()))
                 .build();
     }
 

@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS account_balance
     UNIQUE (account_id, currency)
 );
 
-CREATE SEQUENCE IF NOT EXISTS account_blocked_balance_sequence START 1 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS account_balance_blocked_sequence START 1 INCREMENT 1;
 
-CREATE TABLE IF NOT EXISTS account_blocked_balance
+CREATE TABLE IF NOT EXISTS account_balance_blocked
 (
     id                 BIGINT  NOT NULL PRIMARY KEY,
     account_balance_id BIGINT  NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS account_blocked_balance
     FOREIGN KEY (account_balance_id) REFERENCES account_balance (id) ON DELETE RESTRICT
 );
 
-CREATE TABLE IF NOT EXISTS account_blocked_balance_history
+CREATE TABLE IF NOT EXISTS account_balance_blocked_history
 (
     id                 BIGINT  NOT NULL PRIMARY KEY,
     account_balance_id BIGINT  NOT NULL,

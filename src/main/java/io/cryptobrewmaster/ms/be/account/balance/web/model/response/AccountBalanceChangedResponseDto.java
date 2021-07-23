@@ -22,12 +22,12 @@ public class AccountBalanceChangedResponseDto {
     @NotNull
     private Double quantity;
     @NotNull
-    private Long accountBlockedBalanceId;
+    private Long accountBalanceBlockedId;
 
-    public static AccountBalanceChangedResponseDto of(Long accountBlockedBalanceId, AccountBalance accountBalance) {
+    public static AccountBalanceChangedResponseDto of(Long accountBalanceBlockedId, AccountBalance accountBalance) {
         return new AccountBalanceChangedResponseDto(
                 accountBalance.getAccountId(), accountBalance.getCurrency(), accountBalance.getQuantity().doubleValue(),
-                accountBlockedBalanceId
+                accountBalanceBlockedId
         );
     }
 }

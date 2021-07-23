@@ -9,7 +9,7 @@ import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBa
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedRepository;
 import io.cryptobrewmaster.ms.be.account.balance.kafka.balance.AccountBalanceKafkaSender;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
-import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBlockedBalance;
+import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceBlocked;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +41,10 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
     );
 
     @Transactional
-    public void complete(KafkaAccountBlockedBalance kafkaAccountBlockedBalance) {
+    public void complete(KafkaAccountBalanceBlocked kafkaAccountBalanceBlocked) {
         var accountBlockedBalance = accountBalanceBlockedRepository.getWithLockByIdAndAccountId(
-                kafkaAccountBlockedBalance.getAccountBlockedBalanceId(),
-                kafkaAccountBlockedBalance.getAccountId()
+                kafkaAccountBalanceBlocked.getAccountBalanceBlockedId(),
+                kafkaAccountBalanceBlocked.getAccountId()
         );
         accountBlockedBalance.setStatus(BalanceChangeStatus.DONE);
 
@@ -57,10 +57,10 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
     }
 
     @Transactional
-    public void rollback(KafkaAccountBlockedBalance kafkaAccountBlockedBalance) {
+    public void rollback(KafkaAccountBalanceBlocked kafkaAccountBalanceBlocked) {
         var accountBlockedBalance = accountBalanceBlockedRepository.getWithLockByIdAndAccountId(
-                kafkaAccountBlockedBalance.getAccountBlockedBalanceId(),
-                kafkaAccountBlockedBalance.getAccountId()
+                kafkaAccountBalanceBlocked.getAccountBalanceBlockedId(),
+                kafkaAccountBalanceBlocked.getAccountId()
         );
         accountBlockedBalance.setStatus(BalanceChangeStatus.FAILED);
 

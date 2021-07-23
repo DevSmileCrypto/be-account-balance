@@ -1,4 +1,4 @@
-package io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.uri;
+package io.cryptobrewmaster.ms.be.account.balance.communication.config.uri;
 
 
 import java.net.URI;
@@ -6,7 +6,7 @@ import java.net.URI;
 /**
  * The interface Configuration data storage uri service.
  */
-public interface ConfigurationDataStorageUriService {
+public interface ConfigUriService {
 
     /**
      * Gets all balance config uri.

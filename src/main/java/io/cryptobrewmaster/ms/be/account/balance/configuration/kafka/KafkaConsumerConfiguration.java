@@ -2,9 +2,9 @@ package io.cryptobrewmaster.ms.be.account.balance.configuration.kafka;
 
 import io.cryptobrewmaster.ms.be.account.balance.configuration.kafka.properties.KafkaProperties;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.KafkaAccount;
-import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBlockedBalance;
+import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceBlocked;
 import io.cryptobrewmaster.ms.be.library.kafka.serde.account.KafkaAccountSerde;
-import io.cryptobrewmaster.ms.be.library.kafka.serde.account.balance.KafkaAccountBlockedBalanceSerde;
+import io.cryptobrewmaster.ms.be.library.kafka.serde.account.balance.KafkaAccountBalanceBlockedSerde;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -51,8 +51,8 @@ public class KafkaConsumerConfiguration {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, KafkaAccountBlockedBalance> accountBlockedBalanceConcurrentKafkaListenerContainerFactory() {
-        return getKafkaListenerContainerFactory(KafkaAccountBlockedBalanceSerde.class);
+    public ConcurrentKafkaListenerContainerFactory<String, KafkaAccountBalanceBlocked> accountBalanceBlockedConcurrentKafkaListenerContainerFactory() {
+        return getKafkaListenerContainerFactory(KafkaAccountBalanceBlockedSerde.class);
     }
 
 }

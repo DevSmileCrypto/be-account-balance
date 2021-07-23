@@ -1,7 +1,7 @@
-package io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.service;
+package io.cryptobrewmaster.ms.be.account.balance.communication.config.service;
 
-import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.dto.BalanceConfigDto;
-import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.uri.ConfigurationDataStorageUriService;
+import io.cryptobrewmaster.ms.be.account.balance.communication.config.dto.BalanceConfigDto;
+import io.cryptobrewmaster.ms.be.account.balance.communication.config.uri.ConfigUriService;
 import io.cryptobrewmaster.ms.be.library.communication.BaseCommunicationService;
 import io.cryptobrewmaster.ms.be.library.communication.model.RequestLog;
 import io.cryptobrewmaster.ms.be.library.constants.MicroServiceName;
@@ -14,25 +14,24 @@ import java.util.List;
 
 
 @Service
-public class ConfigurationDataStorageCommunicationServiceImpl extends BaseCommunicationService implements ConfigurationDataStorageCommunicationService {
+public class ConfigCommunicationServiceImpl extends BaseCommunicationService implements ConfigCommunicationService {
 
-    private final ConfigurationDataStorageUriService configurationDataStorageUriService;
+    private final ConfigUriService configUriService;
 
-    public ConfigurationDataStorageCommunicationServiceImpl(RestTemplate configurationDataStorageRestTemplate,
-                                                            ConfigurationDataStorageUriService configurationDataStorageUriService) {
-        super(configurationDataStorageRestTemplate);
-        this.configurationDataStorageUriService = configurationDataStorageUriService;
+    public ConfigCommunicationServiceImpl(RestTemplate configRestTemplate, ConfigUriService configUriService) {
+        super(configRestTemplate);
+        this.configUriService = configUriService;
     }
 
     String getMicroServiceName() {
-        return MicroServiceName.BE_CONFIGURATION_DATA_STORAGE.getProviderName();
+        return MicroServiceName.BE_CONFIG.getProviderName();
     }
 
     @Override
     public List<BalanceConfigDto> getAllBalanceConfig() {
         List<Object> logArgs = List.of(getMicroServiceName());
         return performRequestWithResponse(
-                configurationDataStorageUriService.getAllBalanceConfigUri(),
+                configUriService.getAllBalanceConfigUri(),
                 HttpMethod.GET,
                 new ParameterizedTypeReference<>() {
                 },

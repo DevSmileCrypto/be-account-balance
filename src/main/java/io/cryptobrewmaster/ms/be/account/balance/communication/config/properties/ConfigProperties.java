@@ -1,4 +1,4 @@
-package io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.properties;
+package io.cryptobrewmaster.ms.be.account.balance.communication.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "ms.configuration-data-storage")
-public class ConfigurationDataStorageProperties {
+@ConfigurationProperties(prefix = "ms.config")
+public class ConfigProperties {
 
     private String uri;
     private Path path;
@@ -18,7 +18,7 @@ public class ConfigurationDataStorageProperties {
     @Getter
     @Setter
     public static class Path {
-        private String balance;
+        private String balanceConfig;
     }
 
     @Getter

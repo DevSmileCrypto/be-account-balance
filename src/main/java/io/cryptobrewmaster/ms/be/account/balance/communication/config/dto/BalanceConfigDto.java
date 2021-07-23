@@ -1,4 +1,4 @@
-package io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.dto;
+package io.cryptobrewmaster.ms.be.account.balance.communication.config.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;

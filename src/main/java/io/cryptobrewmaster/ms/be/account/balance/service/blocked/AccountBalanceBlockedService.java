@@ -1,24 +1,24 @@
 package io.cryptobrewmaster.ms.be.account.balance.service.blocked;
 
-import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBlockedBalance;
+import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceBlocked;
 
 /**
- * The interface Account blocked balance service.
+ * The interface Account balance blocked service.
  */
 public interface AccountBalanceBlockedService {
 
     /**
      * Complete.
      *
-     * @param kafkaAccountBlockedBalance the kafka account blocked balance
+     * @param kafkaAccountBalanceBlocked the kafka account balance blocked
      */
-    void complete(KafkaAccountBlockedBalance kafkaAccountBlockedBalance);
+    void complete(KafkaAccountBalanceBlocked kafkaAccountBalanceBlocked);
 
     /**
      * Rollback.
      *
-     * @param kafkaAccountBlockedBalance the kafka account blocked balance
+     * @param kafkaAccountBalanceBlocked the kafka account balance blocked
      */
-    void rollback(KafkaAccountBlockedBalance kafkaAccountBlockedBalance);
+    void rollback(KafkaAccountBalanceBlocked kafkaAccountBalanceBlocked);
 
 }

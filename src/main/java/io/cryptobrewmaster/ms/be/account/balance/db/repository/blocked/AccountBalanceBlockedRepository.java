@@ -16,7 +16,7 @@ public interface AccountBalanceBlockedRepository extends JpaRepository<AccountBa
     default AccountBalanceBlocked getWithLockByIdAndAccountId(Long id, String accountId) {
         return findWithLockByIdAndAccountBalance_AccountId(id, accountId)
                 .orElseThrow(() -> new ParametersAbsentOrInvalidException(
-                        String.format("Account blocked balance with id = %s and account id = %s not exists", id, accountId)
+                        String.format("Account balance blocked with id = %s and account id = %s not exists", id, accountId)
                 ));
     }
 

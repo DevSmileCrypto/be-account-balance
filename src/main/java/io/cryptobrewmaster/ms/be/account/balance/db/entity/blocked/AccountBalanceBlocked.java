@@ -35,16 +35,16 @@ import java.math.BigDecimal;
 @EntityListeners(AccountBalanceBlockedEntityListener.class)
 @Entity
 @SequenceGenerator(
-        name = "account_blocked_balance_sequence_generator",
-        sequenceName = "account_blocked_balance_sequence",
+        name = "account_balance_blocked_sequence_generator",
+        sequenceName = "account_balance_blocked_sequence",
         allocationSize = 1
 )
-@Table(name = "account_blocked_balance")
+@Table(name = "account_balance_blocked")
 public class AccountBalanceBlocked {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "account_blocked_balance_sequence_generator"
+            generator = "account_balance_blocked_sequence_generator"
     )
     @Column(name = "id")
     private Long id;

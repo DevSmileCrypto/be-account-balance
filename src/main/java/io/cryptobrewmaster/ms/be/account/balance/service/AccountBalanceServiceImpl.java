@@ -1,18 +1,19 @@
 package io.cryptobrewmaster.ms.be.account.balance.service;
 
-import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.dto.BalanceConfigDto;
-import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.service.ConfigurationDataStorageCommunicationService;
+import io.cryptobrewmaster.ms.be.account.balance.communication.config.dto.BalanceConfigDto;
+import io.cryptobrewmaster.ms.be.account.balance.communication.config.service.ConfigCommunicationService;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.AccountBalanceRepository;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedRepository;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.AccountBalanceDto;
-import io.cryptobrewmaster.ms.be.account.balance.web.model.param.AccountBalanceRequestParam;
+import io.cryptobrewmaster.ms.be.account.balance.web.model.AccountBalanceUiDto;
+import io.cryptobrewmaster.ms.be.account.balance.web.model.criteria.AccountBalanceFetchedCriteriaDto;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.request.AccountBalanceChangedRequestDto;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.response.AccountBalanceChangedResponseDto;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
 import io.cryptobrewmaster.ms.be.library.dto.PageDto;
-import io.cryptobrewmaster.ms.be.library.exception.balance.NotEnoughBalanceException;
+import io.cryptobrewmaster.ms.be.library.exception.account.balance.NotEnoughBalanceException;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.KafkaAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,14 +31,14 @@ import static io.cryptobrewmaster.ms.be.library.constants.account.balance.Balanc
 @Service
 public class AccountBalanceServiceImpl implements AccountBalanceService {
 
-    private final ConfigurationDataStorageCommunicationService configurationDataStorageCommunicationService;
+    private final ConfigCommunicationService configCommunicationService;
 
     private final AccountBalanceRepository accountBalanceRepository;
     private final AccountBalanceBlockedRepository accountBalanceBlockedRepository;
 
     @Transactional
     public void init(KafkaAccount kafkaAccount) {
-        List<BalanceConfigDto> balanceConfigDtos = configurationDataStorageCommunicationService.getAllBalanceConfig();
+        List<BalanceConfigDto> balanceConfigDtos = configCommunicationService.getAllBalanceConfig();
 
         List<AccountBalance> accountBalances = balanceConfigDtos.stream()
                 .map(balanceConfigDto -> AccountBalance.of(kafkaAccount.getId(), balanceConfigDto))
@@ -46,21 +47,21 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
         accountBalanceRepository.saveAll(accountBalances);
     }
 
-
     @Override
     public AccountBalanceDto getByAccountIdAndCurrency(String accountId, Currency currency) {
         return accountBalanceRepository.getByAccountIdAndCurrency(accountId, currency, AccountBalanceDto::of);
     }
 
     @Override
-    public PageDto<AccountBalanceDto> getAll(AccountBalanceRequestParam param) {
-        if (param.hasAccountId() && param.hasCurrencies()) {
-            return accountBalanceRepository.getAllByAccountIdAndCurrencyIn(param.getAccountId(), param.getCurrencies(), AccountBalanceDto::of);
-        }
-        if (param.hasAccountId()) {
-            return accountBalanceRepository.getAllByAccountId(param.getAccountId(), AccountBalanceDto::of);
-        }
-        return accountBalanceRepository.getAll(AccountBalanceDto::of);
+    public PageDto<AccountBalanceDto> fetchByCriteria(AccountBalanceFetchedCriteriaDto criteria) {
+        var page = accountBalanceRepository.fetchByCriteria(criteria, AccountBalanceDto::of);
+        return PageDto.of(page.getContent(), page.getTotalPages(), page.getTotalElements());
+    }
+
+    @Override
+    public PageDto<AccountBalanceUiDto> fetchByCriteriaForUi(AccountBalanceFetchedCriteriaDto criteria) {
+        var page = accountBalanceRepository.fetchByCriteria(criteria, AccountBalanceUiDto::of);
+        return PageDto.of(page.getContent(), page.getTotalPages(), page.getTotalElements());
     }
 
     @Transactional

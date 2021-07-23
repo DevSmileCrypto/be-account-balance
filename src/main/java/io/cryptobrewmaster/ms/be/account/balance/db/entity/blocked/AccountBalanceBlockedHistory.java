@@ -27,7 +27,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "account_blocked_balance_history")
+@Table(name = "account_balance_blocked_history")
 public class AccountBalanceBlockedHistory {
     @Id
     @Column(name = "id")

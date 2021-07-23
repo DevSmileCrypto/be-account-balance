@@ -1,6 +1,6 @@
 package io.cryptobrewmaster.ms.be.account.balance.db.entity;
 
-import io.cryptobrewmaster.ms.be.account.balance.communication.configuration.data.storage.dto.BalanceConfigDto;
+import io.cryptobrewmaster.ms.be.account.balance.communication.config.dto.BalanceConfigDto;
 import io.cryptobrewmaster.ms.be.account.balance.db.listener.AccountBalanceEntityListener;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalance;
