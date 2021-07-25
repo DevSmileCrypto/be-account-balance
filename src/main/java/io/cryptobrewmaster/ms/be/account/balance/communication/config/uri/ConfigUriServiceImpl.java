@@ -16,7 +16,7 @@ public class ConfigUriServiceImpl implements ConfigUriService {
     @Override
     public URI getAllBalanceConfigUri() {
         return UriComponentsBuilder.fromUriString(configProperties.getUri())
-                .path(configProperties.getPath().getBalanceConfig())
+                .path(configProperties.getPath().getBalanceConfigAll())
                 .build()
                 .encode()
                 .toUri();

@@ -18,7 +18,7 @@ public class ConfigProperties {
     @Getter
     @Setter
     public static class Path {
-        private String balanceConfig;
+        private String balanceConfigAll;
     }
 
     @Getter
