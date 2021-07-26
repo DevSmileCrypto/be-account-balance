@@ -1,8 +1,9 @@
-package io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked;
+package io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked.history;
 
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AbstractEntity;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked.AccountBalanceBlocked;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
 import io.cryptobrewmaster.ms.be.library.constants.audit.AuditAction;
 import io.cryptobrewmaster.ms.be.library.constants.audit.AuditSource;
@@ -54,11 +55,13 @@ public class AccountBalanceBlockedHistory extends AbstractEntity {
     private AuditAction action;
 
     public static AccountBalanceBlockedHistory of(AccountBalanceBlocked accountBalanceBlocked) {
-        return new AccountBalanceBlockedHistory(
+        var accountBalanceBlockedHistory = new AccountBalanceBlockedHistory(
                 accountBalanceBlocked.getId(), accountBalanceBlocked.getAccountBalance(),
                 accountBalanceBlocked.getOldQuantity(), accountBalanceBlocked.getBlockedQuantity(),
                 accountBalanceBlocked.getStatus(), accountBalanceBlocked.getOperation(),
                 accountBalanceBlocked.getSource(), accountBalanceBlocked.getAction()
         );
+        accountBalanceBlockedHistory.setCreatedDate(accountBalanceBlocked.getCreatedDate());
+        return accountBalanceBlockedHistory;
     }
 }

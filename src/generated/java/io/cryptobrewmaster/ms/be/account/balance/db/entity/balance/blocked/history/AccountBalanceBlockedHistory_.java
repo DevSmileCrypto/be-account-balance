@@ -1,4 +1,4 @@
-package io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked;
+package io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked.history;
 
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
