@@ -74,13 +74,13 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
         var oldQuantity = accountBalance.getQuantity();
         var newQuantity = oldQuantity.add(BigDecimal.valueOf(accountBalanceChangedRequestDto.getQuantity()));
 
-        accountBalance.setQuantity(newQuantity);
-        accountBalance = accountBalanceRepository.save(accountBalance);
-
         var accountBlockedBalanceHistory = AccountBalanceBlocked.of(
                 oldQuantity, IN_PROCESS, ADD, accountBalance, accountBalanceChangedRequestDto
         );
-        accountBalanceBlockedRepository.save(accountBlockedBalanceHistory);
+        accountBlockedBalanceHistory = accountBalanceBlockedRepository.save(accountBlockedBalanceHistory);
+
+        accountBalance.setQuantity(newQuantity);
+        accountBalance = accountBalanceRepository.save(accountBalance);
 
         return AccountBalanceChangedResponseDto.of(accountBlockedBalanceHistory.getId(), accountBalance);
     }
@@ -102,13 +102,13 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
             );
         }
 
-        accountBalance.setQuantity(newQuantity);
-        accountBalance = accountBalanceRepository.save(accountBalance);
-
         var accountBlockedBalance = AccountBalanceBlocked.of(
                 oldQuantity, IN_PROCESS, SUBTRACT, accountBalance, accountBalanceChangedRequestDto
         );
-        accountBalanceBlockedRepository.save(accountBlockedBalance);
+        accountBlockedBalance = accountBalanceBlockedRepository.save(accountBlockedBalance);
+
+        accountBalance.setQuantity(newQuantity);
+        accountBalance = accountBalanceRepository.save(accountBalance);
 
         return AccountBalanceChangedResponseDto.of(accountBlockedBalance.getId(), accountBalance);
     }
