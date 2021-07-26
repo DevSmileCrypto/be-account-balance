@@ -1,8 +1,5 @@
 package io.cryptobrewmaster.ms.be.account.balance.service.blocked;
 
-import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.AccountBalanceRepository;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedRepository;
 import io.cryptobrewmaster.ms.be.account.balance.kafka.balance.AccountBalanceKafkaSender;
@@ -13,10 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.Map;
-import java.util.function.BiConsumer;
-
 @RequiredArgsConstructor
 @Service
 public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedService {
@@ -26,18 +19,6 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
     private final AccountBalanceRepository accountBalanceRepository;
     private final AccountBalanceBlockedRepository accountBalanceBlockedRepository;
     private final AccountBalanceBlockedHistoryService accountBalanceBlockedHistoryService;
-
-    private final Map<BalanceOperation, BiConsumer<AccountBalance, AccountBalanceBlocked>> operationRollbackMap = Map.of(
-            BalanceOperation.ADD, (accountBalance, accountBlockedBalance) -> {
-                var newQuantity = accountBalance.getQuantity().subtract(accountBlockedBalance.getBlockedQuantity());
-                newQuantity = newQuantity.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : newQuantity;
-                accountBalance.setQuantity(newQuantity);
-            },
-            BalanceOperation.SUBTRACT, (accountBalance, accountBlockedBalance) -> {
-                var newQuantity = accountBalance.getQuantity().add(accountBlockedBalance.getBlockedQuantity());
-                accountBalance.setQuantity(newQuantity);
-            }
-    );
 
     @Transactional
     public void complete(KafkaAccountBalanceBlocked kafkaAccountBalanceBlocked) {
@@ -64,7 +45,8 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
 
         var accountBalance = accountBalanceBlocked.getAccountBalance();
 
-        operationRollbackMap.get(accountBalanceBlocked.getOperation())
+        accountBalanceBlocked.getOperation()
+                .getRollbackOperationBiConsumer()
                 .accept(accountBalance, accountBalanceBlocked);
 
         accountBalanceRepository.save(accountBalance);
