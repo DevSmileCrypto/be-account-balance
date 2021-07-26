@@ -11,11 +11,11 @@ import java.time.Clock;
 @Component
 public class AccountBalanceEntityListener {
 
-    private Clock utcClock;
+    private static Clock utcClock;
 
     @Autowired
-    public void setUtcClock(Clock utcClock) {
-        this.utcClock = utcClock;
+    public void injectDependencies(Clock utcClock) {
+        AccountBalanceEntityListener.utcClock = utcClock;
     }
 
     @PrePersist

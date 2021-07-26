@@ -3,9 +3,7 @@ package io.cryptobrewmaster.ms.be.account.balance.service.blocked;
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
 import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlockedHistory;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.AccountBalanceRepository;
-import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedHistoryRepository;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedRepository;
 import io.cryptobrewmaster.ms.be.account.balance.kafka.balance.AccountBalanceKafkaSender;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
@@ -26,7 +24,6 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
 
     private final AccountBalanceRepository accountBalanceRepository;
     private final AccountBalanceBlockedRepository accountBalanceBlockedRepository;
-    private final AccountBalanceBlockedHistoryRepository accountBalanceBlockedHistoryRepository;
 
     private final Map<BalanceOperation, BiConsumer<AccountBalance, AccountBalanceBlocked>> operationRollbackMap = Map.of(
             BalanceOperation.ADD, (accountBalance, accountBlockedBalance) -> {
@@ -42,39 +39,33 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
 
     @Transactional
     public void complete(KafkaAccountBalanceBlocked kafkaAccountBalanceBlocked) {
-        var accountBlockedBalance = accountBalanceBlockedRepository.getWithLockByIdAndAccountId(
+        var accountBalanceBlocked = accountBalanceBlockedRepository.getWithLockByIdAndAccountId(
                 kafkaAccountBalanceBlocked.getAccountBalanceBlockedId(),
                 kafkaAccountBalanceBlocked.getAccountId()
         );
-        accountBlockedBalance.setStatus(BalanceChangeStatus.DONE);
+        accountBalanceBlocked.setStatus(BalanceChangeStatus.DONE);
 
-        var accountBlockedBalanceHistory = AccountBalanceBlockedHistory.of(accountBlockedBalance);
-        accountBalanceBlockedHistoryRepository.save(accountBlockedBalanceHistory);
+        accountBalanceBlockedRepository.delete(accountBalanceBlocked);
 
-        accountBalanceBlockedRepository.delete(accountBlockedBalance);
-
-        accountBalanceKafkaSender.outcome(accountBlockedBalance.getAccountBalance());
+        accountBalanceKafkaSender.outcome(accountBalanceBlocked.getAccountBalance());
     }
 
     @Transactional
     public void rollback(KafkaAccountBalanceBlocked kafkaAccountBalanceBlocked) {
-        var accountBlockedBalance = accountBalanceBlockedRepository.getWithLockByIdAndAccountId(
+        var accountBalanceBlocked = accountBalanceBlockedRepository.getWithLockByIdAndAccountId(
                 kafkaAccountBalanceBlocked.getAccountBalanceBlockedId(),
                 kafkaAccountBalanceBlocked.getAccountId()
         );
-        accountBlockedBalance.setStatus(BalanceChangeStatus.FAILED);
+        accountBalanceBlocked.setStatus(BalanceChangeStatus.FAILED);
 
-        var accountBalance = accountBlockedBalance.getAccountBalance();
+        var accountBalance = accountBalanceBlocked.getAccountBalance();
 
-        operationRollbackMap.get(accountBlockedBalance.getOperation())
-                .accept(accountBalance, accountBlockedBalance);
+        operationRollbackMap.get(accountBalanceBlocked.getOperation())
+                .accept(accountBalance, accountBalanceBlocked);
 
         accountBalanceRepository.save(accountBalance);
 
-        var accountBlockedBalanceHistory = AccountBalanceBlockedHistory.of(accountBlockedBalance);
-        accountBalanceBlockedHistoryRepository.save(accountBlockedBalanceHistory);
-
-        accountBalanceBlockedRepository.delete(accountBlockedBalance);
+        accountBalanceBlockedRepository.delete(accountBalanceBlocked);
     }
 
 }
