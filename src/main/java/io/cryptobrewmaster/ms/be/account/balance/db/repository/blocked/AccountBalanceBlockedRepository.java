@@ -1,6 +1,6 @@
 package io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked;
 
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked.AccountBalanceBlocked;
 import io.cryptobrewmaster.ms.be.library.exception.ParametersAbsentOrInvalidException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

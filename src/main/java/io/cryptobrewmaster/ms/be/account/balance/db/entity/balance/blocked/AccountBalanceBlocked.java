@@ -1,8 +1,8 @@
-package io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked;
+package io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked;
 
 import io.cryptobrewmaster.ms.be.account.balance.constants.BalanceOperation;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.account.balance.db.listener.blocked.AccountBalanceBlockedEntityListener;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.AbstractEntity;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.request.AccountBalanceChangedRequestDto;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
 import io.cryptobrewmaster.ms.be.library.constants.audit.AuditAction;
@@ -15,7 +15,6 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -29,10 +28,9 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AccountBalanceBlockedEntityListener.class)
 @Entity
 @SequenceGenerator(
         name = "account_balance_blocked_sequence_generator",
@@ -40,44 +38,40 @@ import java.math.BigDecimal;
         allocationSize = 1
 )
 @Table(name = "account_balance_blocked")
-public class AccountBalanceBlocked {
+public class AccountBalanceBlocked extends AbstractEntity {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "account_balance_blocked_sequence_generator"
     )
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
     @OneToOne(targetEntity = AccountBalance.class)
-    @JoinColumn(name = "account_balance_id")
+    @JoinColumn(name = "account_balance_id", nullable = false)
     private AccountBalance accountBalance;
-    @Column(name = "old_quantity")
+    @Column(name = "old_quantity", nullable = false)
     private BigDecimal oldQuantity;
-    @Column(name = "blocked_quantity")
+    @Column(name = "blocked_quantity", nullable = false)
     private BigDecimal blockedQuantity;
     @Enumerated(EnumType.STRING)
-    @Column(name = "operation")
+    @Column(name = "operation", nullable = false)
     private BalanceOperation operation;
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private BalanceChangeStatus status;
     @Enumerated(EnumType.STRING)
-    @Column(name = "source")
+    @Column(name = "source", nullable = false)
     private AuditSource source;
     @Enumerated(EnumType.STRING)
-    @Column(name = "action")
+    @Column(name = "action", nullable = false)
     private AuditAction action;
-    @Column(name = "created_date")
-    private Long createdDate;
-    @Column(name = "last_modified_date")
-    private Long lastModifiedDate;
 
     public static AccountBalanceBlocked of(BigDecimal oldQuantity, BalanceChangeStatus status, BalanceOperation operation,
                                            AccountBalance accountBalance, AccountBalanceChangedRequestDto accountBalanceChangedRequestDto) {
         return new AccountBalanceBlocked(
                 null, accountBalance, oldQuantity, BigDecimal.valueOf(accountBalanceChangedRequestDto.getQuantity()),
                 operation, status, accountBalanceChangedRequestDto.getSource(),
-                accountBalanceChangedRequestDto.getAction(), null, null
+                accountBalanceChangedRequestDto.getAction()
         );
     }
 }

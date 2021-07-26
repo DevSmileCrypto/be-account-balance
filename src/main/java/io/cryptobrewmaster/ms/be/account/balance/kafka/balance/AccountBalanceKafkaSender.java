@@ -1,7 +1,7 @@
 package io.cryptobrewmaster.ms.be.account.balance.kafka.balance;
 
 import io.cryptobrewmaster.ms.be.account.balance.configuration.kafka.properties.KafkaProperties;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalance;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package io.cryptobrewmaster.ms.be.account.balance.db.repository;
 
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance_;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance_;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.criteria.AccountBalanceFetchedCriteriaDto;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
 import io.cryptobrewmaster.ms.be.library.exception.ParametersAbsentOrInvalidException;

@@ -1,6 +1,6 @@
 package io.cryptobrewmaster.ms.be.account.balance.service.blocked.history;
 
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked.AccountBalanceBlocked;
 
 /**
  * The interface Account balance blocked history service.

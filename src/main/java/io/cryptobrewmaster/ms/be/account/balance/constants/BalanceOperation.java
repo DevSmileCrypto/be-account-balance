@@ -1,7 +1,7 @@
 package io.cryptobrewmaster.ms.be.account.balance.constants;
 
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked.AccountBalanceBlocked;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

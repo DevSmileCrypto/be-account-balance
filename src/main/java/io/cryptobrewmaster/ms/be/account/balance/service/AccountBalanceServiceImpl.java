@@ -2,8 +2,8 @@ package io.cryptobrewmaster.ms.be.account.balance.service;
 
 import io.cryptobrewmaster.ms.be.account.balance.communication.config.dto.BalanceConfigDto;
 import io.cryptobrewmaster.ms.be.account.balance.communication.config.service.ConfigCommunicationService;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.AccountBalance;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanceBlocked;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
+import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.blocked.AccountBalanceBlocked;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.AccountBalanceRepository;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedRepository;
 import io.cryptobrewmaster.ms.be.account.balance.web.model.AccountBalanceDto;
