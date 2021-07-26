@@ -6,6 +6,7 @@ import io.cryptobrewmaster.ms.be.account.balance.db.entity.blocked.AccountBalanc
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.AccountBalanceRepository;
 import io.cryptobrewmaster.ms.be.account.balance.db.repository.blocked.AccountBalanceBlockedRepository;
 import io.cryptobrewmaster.ms.be.account.balance.kafka.balance.AccountBalanceKafkaSender;
+import io.cryptobrewmaster.ms.be.account.balance.service.blocked.history.AccountBalanceBlockedHistoryService;
 import io.cryptobrewmaster.ms.be.library.constants.account.balance.BalanceChangeStatus;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceBlocked;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
 
     private final AccountBalanceRepository accountBalanceRepository;
     private final AccountBalanceBlockedRepository accountBalanceBlockedRepository;
+    private final AccountBalanceBlockedHistoryService accountBalanceBlockedHistoryService;
 
     private final Map<BalanceOperation, BiConsumer<AccountBalance, AccountBalanceBlocked>> operationRollbackMap = Map.of(
             BalanceOperation.ADD, (accountBalance, accountBlockedBalance) -> {
@@ -45,6 +47,8 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
         );
         accountBalanceBlocked.setStatus(BalanceChangeStatus.DONE);
 
+        accountBalanceBlockedHistoryService.saveHistory(accountBalanceBlocked);
+
         accountBalanceBlockedRepository.delete(accountBalanceBlocked);
 
         accountBalanceKafkaSender.outcome(accountBalanceBlocked.getAccountBalance());
@@ -64,6 +68,8 @@ public class AccountBalanceBlockedServiceImpl implements AccountBalanceBlockedSe
                 .accept(accountBalance, accountBalanceBlocked);
 
         accountBalanceRepository.save(accountBalance);
+
+        accountBalanceBlockedHistoryService.saveHistory(accountBalanceBlocked);
 
         accountBalanceBlockedRepository.delete(accountBalanceBlocked);
     }
