@@ -15,10 +15,8 @@ import java.time.Clock;
 @ToString
 @MappedSuperclass
 public abstract class AbstractEntity {
-
     @Column(name = "created_date", nullable = false)
     protected Long createdDate;
-
     @Column(name = "last_modified_date", nullable = false)
     protected Long lastModifiedDate;
 
