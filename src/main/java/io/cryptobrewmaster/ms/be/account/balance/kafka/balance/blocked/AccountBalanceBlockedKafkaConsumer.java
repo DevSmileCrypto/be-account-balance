@@ -2,6 +2,7 @@ package io.cryptobrewmaster.ms.be.account.balance.kafka.balance.blocked;
 
 import io.cryptobrewmaster.ms.be.account.balance.service.blocked.AccountBalanceBlockedService;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceBlocked;
+import io.cryptobrewmaster.ms.be.library.util.KafkaConsumerMDCUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -22,19 +23,19 @@ public class AccountBalanceBlockedKafkaConsumer {
             containerFactory = "accountBalanceBlockedConcurrentKafkaListenerContainerFactory"
     )
     public void consumeAndComplete(ConsumerRecord<String, KafkaAccountBalanceBlocked> consumerRecord) {
-        log.debug("Consumed message for complete account balance blocked: Consumer record = {}", consumerRecord);
-
         var kafkaAccountBalanceBlocked = consumerRecord.value();
         var accountBalanceBlockedLogInfo = kafkaAccountBalanceBlocked.toString();
 
-        try {
-            log.info("Consumed message for complete account balance blocked: {}", accountBalanceBlockedLogInfo);
-            accountBalanceBlockedService.complete(kafkaAccountBalanceBlocked);
-            log.info("Processed message for complete account balance blocked: {}", accountBalanceBlockedLogInfo);
-        } catch (Exception e) {
-            log.error("Error while on consumed for complete account balance blocked: {}. Error = {}",
-                    accountBalanceBlockedLogInfo, e.getMessage());
-        }
+        KafkaConsumerMDCUtil.submit(
+                consumerRecord,
+                () -> {
+                    log.info("Consumed message for complete account balance blocked: {}", accountBalanceBlockedLogInfo);
+                    accountBalanceBlockedService.complete(kafkaAccountBalanceBlocked);
+                    log.info("Processed message for complete account balance blocked: {}", accountBalanceBlockedLogInfo);
+                },
+                e -> log.error("Error while on consumed for complete account balance blocked: {}. Error = {}",
+                        accountBalanceBlockedLogInfo, e.getMessage())
+        );
     }
 
     @KafkaListener(
@@ -44,19 +45,19 @@ public class AccountBalanceBlockedKafkaConsumer {
             containerFactory = "accountBalanceBlockedConcurrentKafkaListenerContainerFactory"
     )
     public void consumeAndRollback(ConsumerRecord<String, KafkaAccountBalanceBlocked> consumerRecord) {
-        log.debug("Consumed message for rollback account balance blocked: Consumer record = {}", consumerRecord);
-
         var kafkaAccountBalanceBlocked = consumerRecord.value();
         var accountBalanceBlockedLogInfo = kafkaAccountBalanceBlocked.toString();
 
-        try {
-            log.info("Consumed message for rollback account balance blocked: {}", accountBalanceBlockedLogInfo);
-            accountBalanceBlockedService.rollback(kafkaAccountBalanceBlocked);
-            log.info("Processed message for rollback account balance blocked: {}", accountBalanceBlockedLogInfo);
-        } catch (Exception e) {
-            log.error("Error while on consumed for rollback account balance blocked: {}. Error = {}",
-                    accountBalanceBlockedLogInfo, e.getMessage());
-        }
+        KafkaConsumerMDCUtil.submit(
+                consumerRecord,
+                () -> {
+                    log.info("Consumed message for rollback account balance blocked: {}", accountBalanceBlockedLogInfo);
+                    accountBalanceBlockedService.rollback(kafkaAccountBalanceBlocked);
+                    log.info("Processed message for rollback account balance blocked: {}", accountBalanceBlockedLogInfo);
+                },
+                e -> log.error("Error while on consumed for rollback account balance blocked: {}. Error = {}",
+                        accountBalanceBlockedLogInfo, e.getMessage())
+        );
     }
 
 }

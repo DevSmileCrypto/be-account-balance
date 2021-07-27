@@ -2,6 +2,7 @@ package io.cryptobrewmaster.ms.be.account.balance.kafka;
 
 import io.cryptobrewmaster.ms.be.account.balance.service.AccountBalanceService;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.KafkaAccount;
+import io.cryptobrewmaster.ms.be.library.util.KafkaConsumerMDCUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -22,19 +23,19 @@ public class AccountKafkaConsumer {
             containerFactory = "accountConcurrentKafkaListenerContainerFactory"
     )
     public void consumeAndInit(ConsumerRecord<String, KafkaAccount> consumerRecord) {
-        log.debug("Consumed message for init account: Consumer record = {}", consumerRecord);
-
         var kafkaAccount = consumerRecord.value();
         var accountLogInfo = kafkaAccount.toString();
 
-        try {
-            log.info("Consumed message for init account: {}", accountLogInfo);
-            accountBalanceService.init(kafkaAccount);
-            log.info("Processed message for init account: {}", accountLogInfo);
-        } catch (Exception e) {
-            log.error("Error while on consumed for init account: {}. Error = {}",
-                    accountLogInfo, e.getMessage());
-        }
+        KafkaConsumerMDCUtil.submit(
+                consumerRecord,
+                () -> {
+                    log.info("Consumed message for init account: {}", accountLogInfo);
+                    accountBalanceService.init(kafkaAccount);
+                    log.info("Processed message for init account: {}", accountLogInfo);
+                },
+                e -> log.error("Error while on consumed for init account: {}. Error = {}",
+                        accountLogInfo, e.getMessage())
+        );
     }
 
 }
