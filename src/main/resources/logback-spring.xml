@@ -20,7 +20,7 @@
 
 	</springProfile>
 
-	<springProfile name="default">
+	<springProfile name="default,stage">
 
 		<appender name="RollingFile"
 				  class="ch.qos.logback.core.rolling.RollingFileAppender">
