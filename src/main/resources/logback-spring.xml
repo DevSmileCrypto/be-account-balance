@@ -24,7 +24,7 @@
 
 		<appender name="RollingFile"
 				  class="ch.qos.logback.core.rolling.RollingFileAppender">
-			<file>${LOGS}/be-game-engine.log</file>
+			<file>${LOGS}/be-account-balance.log</file>
 			<encoder
 					class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 				<Pattern>%d %p [Trace ID: %X{TRACE.ID}] %C{1.} [%t] %m%n</Pattern>
