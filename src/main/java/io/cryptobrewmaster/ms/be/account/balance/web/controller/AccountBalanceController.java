@@ -50,9 +50,9 @@ public class AccountBalanceController {
 
     @PostMapping("/fetch/ui")
     public PageDto<AccountBalanceUiDto> fetchForUi(@Valid @NotNull @RequestBody AccountBalanceFetchedCriteriaDto criteria) {
-        log.info("Request to fetch balances received. {}", criteria);
+        log.info("Request to fetch balances for ui received. {}", criteria);
         var page = accountBalanceService.fetchByCriteriaForUi(criteria);
-        log.info("Response on fetch balances. {}", page);
+        log.info("Response on fetch balances for ui. {}", page);
         return page;
     }
 
