@@ -4,7 +4,7 @@ import io.cryptobrewmaster.ms.be.account.balance.communication.config.dto.Balanc
 import io.cryptobrewmaster.ms.be.account.balance.communication.config.uri.ConfigUriService;
 import io.cryptobrewmaster.ms.be.library.communication.BaseCommunicationService;
 import io.cryptobrewmaster.ms.be.library.communication.model.RequestLog;
-import io.cryptobrewmaster.ms.be.library.constants.MicroServiceName;
+import io.cryptobrewmaster.ms.be.library.constants.ServiceName;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -23,13 +23,13 @@ public class ConfigCommunicationServiceImpl extends BaseCommunicationService imp
         this.configUriService = configUriService;
     }
 
-    String getMicroServiceName() {
-        return MicroServiceName.BE_CONFIG.getProviderName();
+    String getServiceName() {
+        return ServiceName.BE_CONFIG.getProviderName();
     }
 
     @Override
     public List<BalanceConfigDto> getAllBalanceConfig() {
-        List<Object> logArgs = List.of(getMicroServiceName());
+        List<Object> logArgs = List.of(getServiceName());
         return performRequestWithResponse(
                 configUriService.getAllBalanceConfigUri(),
                 HttpMethod.GET,

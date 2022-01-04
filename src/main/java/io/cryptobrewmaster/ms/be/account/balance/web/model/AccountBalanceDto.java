@@ -1,7 +1,6 @@
 package io.cryptobrewmaster.ms.be.account.balance.web.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.cryptobrewmaster.ms.be.account.balance.db.entity.balance.AccountBalance;
 import io.cryptobrewmaster.ms.be.library.constants.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,11 +26,4 @@ public class AccountBalanceDto {
     private Long createdDate;
     @NotNull
     private Long lastModifiedDate;
-
-    public static AccountBalanceDto of(AccountBalance accountBalance) {
-        return new AccountBalanceDto(
-                accountBalance.getId(), accountBalance.getAccountId(), accountBalance.getCurrency(),
-                accountBalance.getQuantity().doubleValue(), accountBalance.getCreatedDate(), accountBalance.getLastModifiedDate()
-        );
-    }
 }

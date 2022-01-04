@@ -1,9 +1,12 @@
 package io.cryptobrewmaster.ms.be.account.balance.configuration.kafka;
 
+import io.cryptobrewmaster.ms.be.account.balance.configuration.kafka.interceptor.KafkaAccountBalanceOperationCallbackProducerInterceptor;
+import io.cryptobrewmaster.ms.be.account.balance.configuration.kafka.interceptor.KafkaAccountBalanceProducerInterceptor;
+import io.cryptobrewmaster.ms.be.account.balance.configuration.kafka.interceptor.KafkaProducerInterceptor;
 import io.cryptobrewmaster.ms.be.account.balance.configuration.kafka.properties.KafkaProperties;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalance;
-import io.cryptobrewmaster.ms.be.library.kafka.interceptor.KafkaProducerInterceptor;
-import io.cryptobrewmaster.ms.be.library.kafka.interceptor.account.balance.KafkaAccountBalanceProducerInterceptor;
+import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceOperationCallback;
+import io.cryptobrewmaster.ms.be.library.kafka.serde.account.balance.KafkaAccountBalanceOperationCallbackSerde;
 import io.cryptobrewmaster.ms.be.library.kafka.serde.account.balance.KafkaAccountBalanceSerde;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -47,6 +50,11 @@ public class KafkaProducerConfiguration {
     @Bean
     public KafkaTemplate<String, KafkaAccountBalance> accountBalanceKafkaTemplate() {
         return getKafkaTemplate(KafkaAccountBalanceSerde.class, KafkaAccountBalanceProducerInterceptor.class);
+    }
+
+    @Bean
+    public KafkaTemplate<String, KafkaAccountBalanceOperationCallback> accountBalanceOperationCallbackKafkaTemplate() {
+        return getKafkaTemplate(KafkaAccountBalanceOperationCallbackSerde.class, KafkaAccountBalanceOperationCallbackProducerInterceptor.class);
     }
 
 }

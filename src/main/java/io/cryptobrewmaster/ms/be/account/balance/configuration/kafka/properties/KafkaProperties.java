@@ -27,5 +27,7 @@ public class KafkaProperties {
     @Setter
     public static class Topic {
         private String accountBalanceOutcome;
+
+        private String accountBalanceOperationHandleCallback;
     }
 }

@@ -4,6 +4,7 @@ import io.cryptobrewmaster.ms.be.account.balance.communication.config.properties
 import io.cryptobrewmaster.ms.be.account.balance.configuration.rest.properties.RestTemplateProperties;
 import io.cryptobrewmaster.ms.be.library.configuration.rest.interceptor.JsonContentTypeRestTemplateInterceptor;
 import io.cryptobrewmaster.ms.be.library.configuration.rest.interceptor.MDCRestTemplateInterceptor;
+import io.cryptobrewmaster.ms.be.library.constants.ServiceName;
 import io.cryptobrewmaster.ms.be.library.exception.integration.CommunicationErrorHandler;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -17,8 +18,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
-
-import static io.cryptobrewmaster.ms.be.library.constants.MicroServiceName.BE_CONFIG;
 
 @Configuration
 public class RestTemplateConfiguration {
@@ -54,7 +53,7 @@ public class RestTemplateConfiguration {
 
     @Bean(name = "configRestTemplate")
     public RestTemplate configRestTemplate(RestTemplateBuilder restTemplateBuilder, ConfigProperties configProperties) {
-        return restTemplateBuilder.errorHandler(new CommunicationErrorHandler(BE_CONFIG))
+        return restTemplateBuilder.errorHandler(new CommunicationErrorHandler(ServiceName.BE_CONFIG))
                 .rootUri(configProperties.getUri())
                 .interceptors(new JsonContentTypeRestTemplateInterceptor())
                 .additionalInterceptors(new MDCRestTemplateInterceptor())

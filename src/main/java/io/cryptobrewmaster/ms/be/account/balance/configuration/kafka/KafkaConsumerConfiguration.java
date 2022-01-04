@@ -2,9 +2,9 @@ package io.cryptobrewmaster.ms.be.account.balance.configuration.kafka;
 
 import io.cryptobrewmaster.ms.be.account.balance.configuration.kafka.properties.KafkaProperties;
 import io.cryptobrewmaster.ms.be.library.kafka.dto.account.KafkaAccount;
-import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceBlocked;
+import io.cryptobrewmaster.ms.be.library.kafka.dto.account.balance.KafkaAccountBalanceOperation;
 import io.cryptobrewmaster.ms.be.library.kafka.serde.account.KafkaAccountSerde;
-import io.cryptobrewmaster.ms.be.library.kafka.serde.account.balance.KafkaAccountBalanceBlockedSerde;
+import io.cryptobrewmaster.ms.be.library.kafka.serde.account.balance.KafkaAccountBalanceOperationSerde;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -17,6 +17,8 @@ import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.cryptobrewmaster.ms.be.account.balance.utility.KafkaUtility.getTargetServiceRecordFilterStrategy;
 
 @RequiredArgsConstructor
 @Configuration
@@ -51,8 +53,10 @@ public class KafkaConsumerConfiguration {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, KafkaAccountBalanceBlocked> accountBalanceBlockedConcurrentKafkaListenerContainerFactory() {
-        return getKafkaListenerContainerFactory(KafkaAccountBalanceBlockedSerde.class);
+    public ConcurrentKafkaListenerContainerFactory<String, KafkaAccountBalanceOperation> accountBalanceOperationConcurrentKafkaListenerContainerFactory() {
+        var factory = getKafkaListenerContainerFactory(KafkaAccountBalanceOperationSerde.class);
+        factory.setRecordFilterStrategy(getTargetServiceRecordFilterStrategy());
+        return factory;
     }
 
 }
